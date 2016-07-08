@@ -23,29 +23,26 @@ var testCache = root + '/.seed-test-cache';
 var testDir = 'test';
 
 var options = {
-  ignore: [
-    'bower_components/**/*',
-    'node_modules/**/*'
-  ]
+  ignore: ['bower_components/**/*', 'node_modules/**/*']
 };
 
-var clean = function() {
+var clean = function clean() {
   return del(testCache, { force: true });
 };
 
-var getTestFileName = function(file) {
+var getTestFileName = function getTestFileName(file) {
   return path.basename(file).replace(/_/g, '').replace('.scss', '') + '-' + uuid.v1() + '.js';
 };
 
 // Delete the test cache directory (just in case it was left over)
 clean();
 
-glob('**/*.scss', options, function(err, matches) {
+glob('**/*.scss', options, function (err, matches) {
   var files = matches;
   var currentDir = process.cwd().split('/').pop();
 
   if (currentDir !== testDir) {
-    files = files.filter(function(file) {
+    files = files.filter(function (file) {
       var dir = testDir + '/';
       return file.indexOf(dir) >= 0;
     });
@@ -54,12 +51,12 @@ glob('**/*.scss', options, function(err, matches) {
   mkdirp.sync(testCache);
 
   if (!files.length) {
-    console.log(`\nCouldn't find any tests in your project!`);
-    console.log(`You can create a new test by executing "seed g"\n`);
-    process.exit(0)
+    console.log('\nCouldn\'t find any tests in your project!');
+    console.log('You can create a new test by executing "seed g"\n');
+    process.exit(0);
   }
 
-  _.forEach(files, function(file) {
+  _.forEach(files, function (file) {
     var dest = testCache + '/' + getTestFileName(file);
     var options = {
       file: file
@@ -70,10 +67,10 @@ glob('**/*.scss', options, function(err, matches) {
     mocha.addFile(dest);
   });
 
-  mocha.run(function(failures){
+  mocha.run(function (failures) {
     // Delete test cache redirectory
     clean();
-    process.on('exit', function() {
+    process.on('exit', function () {
       process.exit(failures);
     });
   });

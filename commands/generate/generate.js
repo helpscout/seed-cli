@@ -9,7 +9,7 @@ var mkdirp = require('mkdirp');
 var path = require('path');
 var prompt = require('./prompt');
 
-var parseOptions = function(options) {
+var parseOptions = function parseOptions(options) {
   if (!options) {
     return false;
   }
@@ -17,13 +17,12 @@ var parseOptions = function(options) {
 
   if (options.type === 'test') {
     return parseTest(options);
-  }
-  else {
+  } else {
     return parseModule(options);
   }
 };
 
-var parseModule = function(options) {
+var parseModule = function parseModule(options) {
   if (!options) {
     return false;
   }
@@ -36,14 +35,12 @@ var parseModule = function(options) {
     var type = options.type;
     if (type === 'utility') {
       type = 'utilities';
-    }
-    else if (type === 'test') {
+    } else if (type === 'test') {
       type = 'test';
+    } else {
+      type = type + 's';
     }
-    else {
-      type = `${ type }s`;
-    }
-    options.dest = `${ type }/${ options.dest }`;
+    options.dest = type + '/' + options.dest;
   }
 
   options.templateFiles = fs.readdirSync(options.templateDir);
@@ -51,7 +48,7 @@ var parseModule = function(options) {
   return options;
 };
 
-var parseTest = function(options) {
+var parseTest = function parseTest(options) {
   if (!options) {
     return false;
   }
@@ -59,15 +56,14 @@ var parseTest = function(options) {
   options.name = options.name.replace('seed-', '');
   options.dest = 'test';
   options.templateDir = global.templateDir + 'test/';
-  options.templateFiles = [ 'test.scss' ];
+  options.templateFiles = ['test.scss'];
 
   return options;
 };
 
-
-var generate = function(options) {
+var generate = function generate(options) {
   if (!options) {
-    process.exit(1)
+    process.exit(1);
     return false;
   }
 
@@ -75,9 +71,9 @@ var generate = function(options) {
 
   mkdirp.sync(options.dest);
 
-  console.log(`Generating your new ${ options.type }…\n`);
+  console.log('Generating your new ' + options.type + '…\n');
 
-  _.forEach(options.templateFiles, function(file) {
+  _.forEach(options.templateFiles, function (file) {
     var template = fs.readFileSync(options.templateDir + file, 'utf8');
     var outputFile = file;
 
@@ -86,11 +82,11 @@ var generate = function(options) {
     }
 
     fs.writeFileSync(options.dest + '/' + outputFile, _.template(template)(options));
-    console.log(`    created  ${ options.dest + '/' + outputFile }`);
+    console.log('    created  ' + (options.dest + '/' + outputFile));
   });
 
-  console.log(`\nCongrats! Your new .scss ${ options.type } has been created.`);
-  process.exit(0)
+  console.log('\nCongrats! Your new .scss ' + options.type + ' has been created.');
+  process.exit(0);
 };
 
 module.exports = generate;

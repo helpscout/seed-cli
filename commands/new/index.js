@@ -16,11 +16,10 @@ var command = global.cli.input[0];
 
 var generate = require('./generate');
 
-if (((command === 'new' || command === 'n') && isEmpty(global.cli.flags)) || global.cli.flags.new) {
+if ((command === 'new' || command === 'n') && isEmpty(global.cli.flags) || global.cli.flags.new) {
 
-  prompt()
-  .then(function(options) {
-    console.log('Generating your new Seed pack…\n')
+  prompt().then(function (options) {
+    console.log('Generating your new Seed pack…\n');
 
     options.packName = 'seed-' + options.name;
 
@@ -36,10 +35,10 @@ if (((command === 'new' || command === 'n') && isEmpty(global.cli.flags)) || glo
     git(dest);
     console.log('Git has been setup!');
 
-    console.log(`\nCongrats! Your new Seed pack has been created.\n`);
+    console.log('\nCongrats! Your new Seed pack has been created.\n');
     console.log(chalk.yellow('Don\'t forget to run npm install'));
     console.log(chalk.green('Happy coding <3'));
 
-    process.exit(0)
+    process.exit(0);
   });
 }
