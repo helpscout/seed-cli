@@ -1,4 +1,5 @@
 // Commands :: Generate :: Config
+'use strict';
 
 var _ = require('lodash');
 
