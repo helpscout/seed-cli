@@ -55,5 +55,8 @@
     "seed-harvester": "0.1.5",
     "shelljs": "0.7.7",
     "uuid": "3.0.1"
+  },
+  "devDependencies": {
+    "growl": ">=1.10.0"
   }
 }
